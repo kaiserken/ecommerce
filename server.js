@@ -18,32 +18,21 @@ mongoose.connect('mongodb://root:abc123@ds055515.mongolab.com:55515/kentest', fu
 });
 
 // middelware  - shows routes hit
+app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.engine('ejs', ejsmate);
 app.set('view engine', 'ejs');
 
-app.post('/create-user', function(req, res, next){
-  var user  = new User();
+var mainRoutes = require('./routes/main');
+var userRoutes = require('./routes/user');
+app.use(mainRoutes);
+app.use(userRoutes);
 
-  user.profile.name  = req.body.name;
-  user.password  = req.body.password;
-  user.email  = req.body.email;
 
-  user.save(function(err){
-    if (err) return next(err);
-    res.json('successfully created new user');
-  });
-});
 
-app.get('/', function(reg, res){
-  res.render('home');
-});
 
-app.get('/about', function(req, res){
-  res.render('about');
-});
 
 
 
