@@ -23,7 +23,7 @@ router.get('/profile', function(req, res, next){
 });
 
 
-router.get('/signup', function(req,res,next){
+router.get('/signup', function(req, res, next){
   res.render('accounts/signup', {
     errors : req.flash('errors')
   });
@@ -45,12 +45,21 @@ router.post('/signup', function(req, res, next){
     } else {
       user.save(function(err, user){
         if (err) return next(err);
-      return res.redirect('/');
+
+        req.logIn(user, function(err){
+          if (err) return next(err);
+          res.redirect('/profile');
+        });
+
 
       });
     }
   });
+});
 
+router.get('/logout', function(req, res, next){
+  req.logout();
+  res.redirect('/');
 });
 
 
