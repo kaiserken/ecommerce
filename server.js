@@ -14,6 +14,7 @@ var passport  = require('passport');
 var User  = require('./models/user');
 var Category  = require('./models/category');
 
+
 var app  = express();
 
 mongoose.connect(secret.database, function(err){
